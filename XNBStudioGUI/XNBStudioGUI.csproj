@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PortableXNB\PortableXNB.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Resources\" />
+        <Resource Include="Resources\*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Spooksoft.HexEditor" Version="1.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Editors\Texture2DEditor.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+</Project>
