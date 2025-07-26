@@ -1,4 +1,5 @@
 # XNB Studio
 ## A WIP editor for XNA/Monogame content files
 
-![GUI Screenshot](Assets/GUIScreenshot.png)
+![Texture viewer screenshot](Assets/TextureViewerScreenshot.png)
+![Sound effect screenshot](Assets/SoundEffectScreenshot.png)

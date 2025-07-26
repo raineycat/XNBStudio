@@ -8,6 +8,8 @@ using System.Windows.Media;
 using NAudio.Wave;
 using NAudio.WaveFormRenderer;
 using PortableXNB.Formats;
+using Color = System.Drawing.Color;
+using Pen = System.Drawing.Pen;
 
 namespace XNBStudioGUI.Editors;
 
@@ -108,9 +110,13 @@ public partial class SoundEffectEditor : IXnbEditor, INotifyPropertyChanged
         }
 
         var wave = new RawSourceWaveStream(Sound.SampleBuffer, 0, Sound.SampleBuffer.Length, Sound.WaveFormat);
+        var greenPen = new Pen(Color.SeaGreen);
         var settings = new StandardWaveFormRendererSettings
         {
-            Width = (int)WaveFormDisplay.ActualWidth
+            Width = (int)WaveFormDisplay.ActualWidth,
+            BackgroundColor = Color.Black,
+            BottomPeakPen = greenPen,
+            TopPeakPen = greenPen
         };
 
         if (settings.Width == 0)
@@ -124,6 +130,7 @@ public partial class SoundEffectEditor : IXnbEditor, INotifyPropertyChanged
         {
             Waveform = _renderer.Render(wave, settings);
             wave.Dispose();
+            greenPen.Dispose();
             
             Dispatcher.Invoke(() =>
             {
