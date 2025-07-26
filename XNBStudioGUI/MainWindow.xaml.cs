@@ -136,8 +136,8 @@ public partial class MainWindow : INotifyPropertyChanged
             {
                 var editors = PriorityResolver.GetEditorsForFile(SelectedFile.Data!);
                 var ed = editors[0];
-                
-                ed.File = SelectedFile.Data;
+
+                ed.File = SelectedFile;
                 if(ed is FrameworkElement ui)
                 {
                     ui.Tag = _dynamicPanelTag;

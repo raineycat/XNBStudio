@@ -4,11 +4,14 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
       <PackageReference Include="LibSquishNet" Version="2.0.0" />
+      <PackageReference Include="NAudio" Version="2.2.1" />
+      <PackageReference Include="NAudio.WaveFormRenderer" Version="2.0.0" />
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.10" />
     </ItemGroup>
 

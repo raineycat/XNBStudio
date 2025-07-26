@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using PortableXNB;
+using PortableXNB.Formats;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace XNBStudioGUI.Editors;
@@ -13,8 +13,8 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
    
     public string EditorName => "Texture editor";
     
-    private XnbFile? _file;
-    public XnbFile? File
+    private LoadedFile? _file;
+    public LoadedFile? File
     {
         get => _file;
         set
@@ -25,9 +25,9 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
         }
     }
 
-    private XnbTexture2D? _texture;
+    private Texture2D? _texture;
 
-    public XnbTexture2D? Texture
+    public Texture2D? Texture
     {
         get => _texture;
         set
@@ -77,7 +77,7 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
         {
             foreach (var mip in Texture.Mips)
             {
-                mip.Dispose();
+                // mip.Dispose();
             }
 
             Texture = null;
@@ -85,8 +85,8 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
 
         try
         {
-            Texture = File.LoadTexture2D();
-            PreviewImage = Texture.Mips[0];
+            Texture = File.Assets[0] as Texture2D;
+            PreviewImage = Texture!.Mips[0];
         }
         catch (Exception e)
         {

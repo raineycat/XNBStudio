@@ -12,6 +12,6 @@
     <Grid>
         <!--<hex:HexEditorDisplay x:Name="FileContentHexEditor" IsReadOnly="True"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
-        <TextBlock Text="{Binding File.Contents.Length, StringFormat=[{0} bytes]}" />
+        <TextBlock Text="{Binding File.Data.Contents.Length, StringFormat=[{0} bytes]}" />
     </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using PortableXNB.Compression;
+using PortableXNB.TypeReaders;
 
 namespace PortableXNB;
 
@@ -103,6 +104,7 @@ public class XnbFile : IDisposable
         
         // xnb.Contents = buffer[contentsStartPos..];
         xnb.Contents = new MemoryStream(buffer, contentsStartPos, (int)(reader.BaseStream.Length - contentsStartPos));
+        
         return xnb;
     }
 

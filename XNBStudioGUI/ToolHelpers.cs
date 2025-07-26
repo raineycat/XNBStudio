@@ -54,4 +54,18 @@ public static class ToolHelpers
 
         return dlg.ShowDialog(owner).GetValueOrDefault() ? dlg.FileNames : Enumerable.Empty<string>();
     }
+    
+    public static string? SaveFile(this Window owner, string type, string filter, string filename = "")
+    {
+        var dlg = new SaveFileDialog
+        {
+            Title = $"Save {type}...",
+            Filter = $"{type} ({filter})|{filter}|All files|*.*",
+            ClientGuid = DialogId,
+            CheckFileExists = false,
+            FileName = filename
+        };
+
+        return dlg.ShowDialog(owner).GetValueOrDefault() ? dlg.FileName : null;
+    }
 }

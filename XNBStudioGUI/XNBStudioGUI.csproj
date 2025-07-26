@@ -22,12 +22,4 @@
       <PackageReference Include="Spooksoft.HexEditor" Version="1.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Page Update="Editors\Texture2DEditor.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-    </ItemGroup>
-
 </Project>

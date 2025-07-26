@@ -1,18 +1,41 @@
 ﻿using System.Text;
-using BCnEncoder.Decoder;
-using BCnEncoder.ImageSharp;
-using BCnEncoder.Shared;
+using PortableXNB.Formats;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Squish;
 
-namespace PortableXNB;
+namespace PortableXNB.TypeReaders;
 
-public static class XnbTexture2DReader
+public class Texture2DReader : ITypeReader
 {
-    public static XnbTexture2D LoadImage(BinaryReader r, XnbVersion version)
+    public string Name => "Texture reader (2D)";
+    public string DefaultFileExtension => "png";
+
+    public bool MatchType(string type)
     {
-        var tex = new XnbTexture2D();
+        if (type.StartsWith("Microsoft.Xna.Framework.Content.Texture2DReader")) return true;
+        return false;
+    }
+
+    public object LoadAsset(XnbFile xnb)
+    {
+        // xnb.Contents.Seek(0, SeekOrigin.Begin);
+        using var r = new BinaryReader(xnb.Contents, Encoding.Default, true);
+
+        var poly = r.ReadByte();
+        if (poly > 0)
+        {
+            return LoadImage(r, xnb.Version);
+        }
+        else
+        {
+            throw new XnbException("Invalid poly byte");
+        }
+    }
+    
+    public static Texture2D LoadImage(BinaryReader r, XnbVersion version)
+    {
+        var tex = new Texture2D();
         var formatCode = r.ReadInt32();
         
         // why did this change??
@@ -22,7 +45,7 @@ public static class XnbTexture2DReader
             XnbVersion.XnaGameStudio4 => (XnbSurfaceFormat)formatCode,
             XnbVersion.XnaFramework3_1 => formatCode switch
             {
-                1 => XnbSurfaceFormat.ColorBGRA,
+                1 => XnbSurfaceFormat.Color,
                 28 => XnbSurfaceFormat.Dxt1,
                 30 => XnbSurfaceFormat.Dxt3,
                 32 => XnbSurfaceFormat.Dxt5,
@@ -44,8 +67,8 @@ public static class XnbTexture2DReader
 
             switch (format)
             {
-                case XnbSurfaceFormat.ColorBGRA:
-                    img = Image.LoadPixelData<Bgra32>(buffer, (int)width, (int)height);
+                case XnbSurfaceFormat.Color:
+                    img = Image.LoadPixelData<Rgba32>(buffer, (int)width, (int)height);
                     break;
 
                 case XnbSurfaceFormat.Dxt1:
@@ -82,21 +105,6 @@ public static class XnbTexture2DReader
                 case XnbSurfaceFormat.Alpha8:
                     img = Image.LoadPixelData<A8>(buffer, (int)width, (int)height);
                     break;
-                
-                case XnbSurfaceFormat.Luminance:
-                    img = Image.LoadPixelData<L8>(buffer, (int)width, (int)height);
-                    break;
-
-                case XnbSurfaceFormat.LuminanceAlpha:
-                    img = Image.LoadPixelData<La16>(buffer, (int)width, (int)height);
-                    break;
-
-                case XnbSurfaceFormat.Bc7:
-                {
-                    var dec = new BcDecoder();
-                    img = dec.DecodeRawToImageRgba32(buffer, (int)width, (int)height, CompressionFormat.Bc7);
-                    break;
-                }
 
             default:
                     throw new XnbException("Unsupported surface format! " + format);
@@ -109,21 +117,5 @@ public static class XnbTexture2DReader
         tex.Width = width;
         tex.Height = height;
         return tex;
-    }
-
-    public static XnbTexture2D LoadTexture2D(this XnbFile xnb)
-    {
-        xnb.Contents.Seek(0, SeekOrigin.Begin);
-        using var r = new BinaryReader(xnb.Contents, Encoding.Default, true);
-
-        var poly = r.ReadByte();
-        if (poly > 0)
-        {
-            return LoadImage(r, xnb.Version);
-        }
-        else
-        {
-            throw new XnbException("Invalid poly byte");
-        }
     }
 }

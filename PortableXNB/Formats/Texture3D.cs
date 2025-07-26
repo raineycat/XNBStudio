@@ -1,8 +1,8 @@
 ﻿using SixLabors.ImageSharp;
 
-namespace PortableXNB;
+namespace PortableXNB.Formats;
 
-public class XnbTexture3D
+public class Texture3D
 {
     public XnbSurfaceFormat Format { get; set; }
     public int Width { get; set; }

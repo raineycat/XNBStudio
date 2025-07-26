@@ -12,8 +12,8 @@ public partial class GenericEditor : IXnbEditor, INotifyPropertyChanged
 
     public string EditorName => "Generic editor";
 
-    private XnbFile? _file;
-    public XnbFile? File
+    private LoadedFile? _file;
+    public LoadedFile? File
     {
         get => _file;
         set
@@ -43,7 +43,7 @@ public partial class GenericEditor : IXnbEditor, INotifyPropertyChanged
     private void UpdateHexEditor()
     {
         if(File == null) return;
-        _stream = File.Contents!;
+        _stream = File.Data?.Contents!;
         //FileContentHexEditor.Document = new HexByteContainer(_stream);
     }
     
