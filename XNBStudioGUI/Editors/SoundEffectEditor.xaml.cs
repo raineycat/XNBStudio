@@ -74,6 +74,7 @@ public partial class SoundEffectEditor : IXnbEditor, INotifyPropertyChanged
         _imageConv = new ImageBindingConverter();
 
         WaveFormDisplay.LayoutUpdated += (_, _) => GenerateWaveform();
+        _audioOut.PlaybackStopped += (_, _) => Sound?.ResetPosition();
     }
     
     public int GetPriorityForType(string type)
