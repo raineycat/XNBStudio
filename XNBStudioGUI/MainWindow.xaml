@@ -43,7 +43,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open" Command="Open" />
+                <MenuItem Header="Open..." Command="Open" />
                 <MenuItem Header="Close" Command="xnbs:StudioCommands.CloseFile" />
                 <MenuItem Header="Close all" Command="xnbs:StudioCommands.CloseAllFiles" />
                 <Separator />

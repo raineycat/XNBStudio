@@ -4,14 +4,14 @@ namespace XNBStudioGUI;
 
 public static class StudioCommands
 {
-    public static RoutedUICommand CloseFile = new(
+    public static readonly RoutedUICommand CloseFile = new(
         "Close file",
         nameof(CloseFile),
         typeof(StudioCommands),
         [new KeyGesture(Key.C, ModifierKeys.Alt)]
     );
     
-    public static RoutedUICommand CloseAllFiles = new(
+    public static readonly RoutedUICommand CloseAllFiles = new(
         "Close all files",
         nameof(CloseAllFiles),
         typeof(StudioCommands),

@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PortableXNB.Formats;
+using SixLabors.ImageSharp;
+using Color = System.Drawing.Color;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace XNBStudioGUI.Editors;
@@ -48,6 +52,17 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    private float _backgroundOpacity = 100f;
+    public float BackgroundOpacity
+    {
+        get => _backgroundOpacity;
+        set
+        {
+            _backgroundOpacity = value;
+            OnPropertyChanged();
+        }
+    }
     
     public Texture2DEditor()
     {
@@ -75,11 +90,6 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
 
         if (Texture != null)
         {
-            foreach (var mip in Texture.Mips)
-            {
-                // mip.Dispose();
-            }
-
             Texture = null;
         }
 
@@ -107,5 +117,22 @@ public partial class Texture2DEditor : IXnbEditor, INotifyPropertyChanged
         {
             PreviewImage = img;
         }
+    }
+
+    private void CanExecuteIfPreviewLoaded(object sender, CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = PreviewImage != null;
+    }
+
+    private void ExecutePrintCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        if(PreviewImage == null) return;
+        
+        var win = Window.GetWindow(this);
+        var path = win?.SaveFile("PNG files", "*.png", (File?.FileName ?? "texture") + ".png");
+        if(path == null) return;
+
+        PreviewImage.SaveAsPng(path);
+        win?.ShowMessageBox("Exported texture!");
     }
 }

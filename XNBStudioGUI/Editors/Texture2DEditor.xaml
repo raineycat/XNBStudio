@@ -11,12 +11,18 @@
              d:DataContext="{d:DesignInstance xnbse:Texture2DEditor}">
     <UserControl.Resources>
         <xnbs:ImageBindingConverter x:Key="ImageBindingConverterRes" />
+        <xnbs:OpacityToColorConverter x:Key="ColorConverter" />
     </UserControl.Resources>
+    
+    <UserControl.CommandBindings>
+        <CommandBinding Command="Print" Executed="ExecutePrintCommand" CanExecute="CanExecuteIfPreviewLoaded" />
+    </UserControl.CommandBindings>
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         
         <TextBlock Grid.Row="0">
@@ -30,7 +36,12 @@
             </TextBlock.Text>
         </TextBlock>
         
-        <Grid Grid.Row="1" x:Name="TextureDataDisplay">
+        <Grid Grid.Row="1" x:Name="TextureDataDisplay" Background="{DynamicResource BackgroundBrush}">
+            <Grid.Resources>
+                <SolidColorBrush x:Key="BackgroundBrush" 
+                                 Color="{Binding BackgroundOpacity, Converter={StaticResource ColorConverter}}" />
+            </Grid.Resources>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="5" />
@@ -70,5 +81,19 @@
                                x:Name="ImageError" 
                                Visibility="Hidden"
                                TitleText="Failed to load the image!" />
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="5" Command="Print">Export to PNG</Button>
+            
+            <Slider Value="{Binding BackgroundOpacity}"
+                    ToolTip="Background opacity"
+                    Minimum="0"
+                    Interval="5"
+                    Maximum="100"
+                    MinWidth="100"
+                    Margin="5,0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal" />
+        </StackPanel>
     </Grid>
 </UserControl>
